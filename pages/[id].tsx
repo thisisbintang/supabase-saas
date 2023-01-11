@@ -2,6 +2,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { useEffect, useState } from "react";
 import Video from 'react-player'
+import { useAuth } from "../context/auth";
 import { Database } from "../types/supabase";
 
 import { supabase } from "../utils/supabase";
@@ -9,6 +10,7 @@ import { supabase } from "../utils/supabase";
 export default function LessonDetails({ lesson }: InferGetStaticPropsType<typeof getStaticProps>) {
     const [videoUrl, setVideoUrl] = useState<string | null>();
     const supabase = useSupabaseClient()
+    const { profile } = useAuth()
 
     useEffect(() => {
         const fetchPremiumContentData = async (lessonId: number) => {
@@ -17,7 +19,7 @@ export default function LessonDetails({ lesson }: InferGetStaticPropsType<typeof
         }
 
         if (lesson) fetchPremiumContentData(lesson.id)
-    }, [])
+    }, [profile])
 
     return (
         <div className="max-w-3xl mx-auto py-16 px-8">
