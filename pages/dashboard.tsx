@@ -9,7 +9,7 @@ import { useAuth } from '../context/auth'
 
 import { Database } from '../types/supabase'
 
-const dashboard = ({  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Dashboard = ({  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
     const { profile } = useAuth()
 
@@ -50,4 +50,4 @@ export const getServerSideProps: GetServerSideProps<{ intiliasSession: Session}>
     }
 }
 
-export default dashboard
+export default Dashboard

@@ -5,7 +5,7 @@ import React, { useCallback, useEffect } from 'react'
 
 import { useAuth } from '../context/auth'
 
-const login = () => {
+const Login = () => {
     const supabase = useSupabaseClient();
     const { login } = useAuth()
 
@@ -44,4 +44,4 @@ export const getServerSideProps: GetServerSideProps<{
     }
 }
 
-export default login
+export default Login
