@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 
 import { supabase } from '../utils/supabase'
-import { useUser } from '../context/user'
 
 export default function Home({ lessons }: InferGetStaticPropsType<typeof getStaticProps>) {
 
