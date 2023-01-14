@@ -29,9 +29,13 @@ const Navbar = () => {
                     </Link>
                 )
             }
-            <Link className={`${activeTab('/pricing')}`} href={'/pricing'}>Pricing</Link>
             {
-                user ? <button className='ml-auto' onClick={logout}>Logout</button> : <Link className={`ml-auto ${activeTab('/login')}`} href='/login'>Login</Link>
+                user ? <button className='ml-auto' onClick={logout}>Logout</button> : (
+                    <div className='ml-auto flex items-center'>
+                        <Link className={` ${activeTab('/login')}`} href='/login'>Login</Link>
+                        <Link className={`ml-3 ${activeTab('/register')}`} href='/register'>Register</Link>
+                    </div>
+                )
             }
         </div>
     )

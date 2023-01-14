@@ -1,17 +1,19 @@
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { Session } from '@supabase/auth-helpers-react'
+import { Session, useUser } from '@supabase/auth-helpers-react'
 import axios from 'axios'
 import { GetServerSideProps, GetServerSidePropsContext, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
+import { QRCodeSVG } from 'qrcode.react'
 
 import React from 'react'
 import { useAuth } from '../context/auth'
 
 import { Database } from '../types/supabase'
 
-const Dashboard = ({  }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Dashboard = ({ }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
     const router = useRouter()
-    const { profile } = useAuth()
+    const { student } = useAuth()
+    const user = useUser()
 
     const loadPortal = async () => {
         const { data } = await axios.get('/api/portal')
@@ -21,14 +23,13 @@ const Dashboard = ({  }: InferGetServerSidePropsType<typeof getServerSideProps>)
     return (
         <div className='container mx-auto px-8'>
             <div className='gap-y-4'>
-                <h2 className='text-xl font-semibold'>Hai {profile?.email}</h2>
+                <h2 className='text-xl font-semibold'>Hai {student?.nama}</h2>
                 {
-                    profile?.is_subscribed ? (
-                        <>
-                            <div>Subscribed: {profile.interval}</div>
-                            <button onClick={loadPortal}>Manage subcription</button>
-                        </>
-                    ) : <button onClick={() => router.push('/pricing')}>Subscribe</button>
+                    user && (
+                        <QRCodeSVG
+                            value={user.id}
+                        />
+                    )
                 }
 
             </div>
@@ -36,7 +37,7 @@ const Dashboard = ({  }: InferGetServerSidePropsType<typeof getServerSideProps>)
     )
 }
 
-export const getServerSideProps: GetServerSideProps<{ intiliasSession: Session}> = async (ctx) => {
+export const getServerSideProps: GetServerSideProps<{ intiliasSession: Session | null }> = async (ctx) => {
     const supabase = createServerSupabaseClient<Database>(ctx);
 
     const { data: { session } } = await supabase.auth.getSession()
@@ -45,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<{ intiliasSession: Session}>
 
     return {
         props: {
-            intiliasSession: session!,
+            intiliasSession: session,
         }
     }
 }
